@@ -23,6 +23,14 @@ class Rescuetime(MycroftSkill):
             require("rescuetime").build()
         self.register_intent(rescuetime_intent, self.handle_rescuetime)
 
+        """Set initial variables for the Rescuetime API"""
+        self.rescuetime_API_URL_daily_summary = 'https://www.rescuetime.com/anapi/daily_summary_feed'
+
+        # these are not currently implemented, but are listed here for future expansion
+        # self.rescuetime_API_URL_analytic_data = 'https://www.rescuetime.com/anapi/data'
+        self.rescuetime_API_URL_alerts_feed = 'https://www.rescuetime.com/anapi/alerts_feed'
+        self.rescuetime_API_URL_alerts_feed = 'https://www.rescuetime.com/anapi/alerts_feed'
+
         """Check to see if the apikey has been entered in Settings"""
         if not self.settings.get('rescuetime_apikey'):
             LOGGER.error('rescuetime_apikey is not set on home.mycroft.ai')
@@ -37,7 +45,6 @@ class Rescuetime(MycroftSkill):
     # Private methods
     def _get_productivity_pulse(self):
         """Return the current productivity pulse using percent"""
-        LOGGER.info(apikey)
         APIstring = self._get_API_request_string()
         r = requests.get('https://www.rescuetime.com/anapi/daily_summary_feed', auth=('', apikey))
         # check that the status code that is returned is 200 OK
