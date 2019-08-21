@@ -9,7 +9,11 @@
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler
 from mycroft.util.log import getLogger
+
 import requests
+
+# @codereview do we need requests and json - requests includes good json support
+
 from datetime import datetime, timedelta
 import json
 
@@ -24,6 +28,8 @@ class Rescuetime(MycroftSkill):
     # The constructor of the Skill, which calls MycroftSkill's constructor
     def __init__(self):
         MycroftSkill.__init__(self)
+
+    # @codereview: is there a reason why we're calling both __init__ and initialize()? Can it all go into __init__()?
 
     # This method loads the files needed for the Skill's functioning, and
     # creates and registers each intent that the Skill uses
@@ -84,7 +90,6 @@ class Rescuetime(MycroftSkill):
             self.rescuetime_API_date_restrict_begin,
             self.rescuetime_API_date_restrict_end,
             self.rescuetime_API_format,
-            self.rescuetime_API_perspective,
         )
 
         # the Python interpreter isn't converting all the values in
@@ -117,7 +122,6 @@ class Rescuetime(MycroftSkill):
         API_dt_begin,
         API_dt_end,
         API_format,
-        API_perspective,
     ):
         """Return a URL that can be used to make a GET request on the Rescuetime API"""
 
@@ -128,7 +132,7 @@ class Rescuetime(MycroftSkill):
         LOGGER.info(API_dt_begin)
         LOGGER.info(API_dt_end)
         LOGGER.info(API_format)
-        LOGGER.info(API_perspective)
+        LOGGER.info(self.rescuetime_API_perspective)
 
         APIstring = (
             API_url
@@ -152,7 +156,7 @@ class Rescuetime(MycroftSkill):
             + API_format
             + "&"
             + "perspective="
-            + API_perspective
+            + self.rescuetime_API_perspective
         )
 
         LOGGER.info(APIstring)
